@@ -14,8 +14,3 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_create_Button_clicked()
-{
-    dlg_create_account *account = new dlg_create_account(this);
-    account->show();
-}

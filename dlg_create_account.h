@@ -15,6 +15,11 @@ public:
     explicit dlg_create_account(QWidget *parent = 0);
     ~dlg_create_account();
 
+private slots:
+    void on_create_clicked();
+
+    void on_recover_clicked();
+
 private:
     Ui::dlg_create_account *ui;
 };
