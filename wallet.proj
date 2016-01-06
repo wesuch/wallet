@@ -1,0 +1,18 @@
+{
+   "ios":true,
+   "rpi":true,
+   "ios-camera":false,
+   "osx":true,
+   "android":true,
+   "app-ver":"1.0.0",
+   "app-name":"Wallet",
+   "droid-gps":false,
+   "ios-new":true,
+   "ios-gps":false,
+   "droid-camera":false,
+   "droid-net":true,
+   "id":"com.wesuch.wallet",
+   "source":"wallet.8th",
+   "icon":"wallet.png",
+   "windows":true,
+   "linux":true}
