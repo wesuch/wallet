@@ -1,0 +1,46 @@
+true app:isgui !
+{
+	"kind" : "win",
+	"wide" : 200,
+	"high" : 300,
+	"title" : "汇通钱包软件",
+	"titleBarHeight" : 0,
+	"children" :
+	[
+		{
+			"kind" : "box",
+			"bounds" : "0, 0, parent.width, parent.height",
+			"bg" : "darkslategray4",
+			"children" :
+			[
+				{
+					"kind" : "label",
+					"font" : 16,
+					"fg" : "white",
+					"justify" : [ "hcenter", "vcenter" ],
+					"bounds" : "0, 0, parent.width, 22",
+					"label" : "欢迎使用汇通钱包"
+				} ,
+				{
+					"kind" : "edit",
+					"text" : "hello, World",
+					"bounds" : "10, 22, parent.width - 20, 222",
+					"fg" : "azure1",
+					"bg" : "darkslategray",
+					"ro" : "true"
+				} ,
+				{
+					"kind" : "btn",
+					"label" : "我同意上述条款",
+					"font" : 16,
+					"bounds" : "10, 232, parent.width - 20, 290",
+					"bg" : "cadetblue",
+					"fg" : "azure1"
+				}
+			]
+		}
+	]
+} var, guiobj
+: app:main
+	guiobj @ g:new 
+	g:show ;
