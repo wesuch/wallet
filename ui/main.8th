@@ -1,0 +1,95 @@
+{
+	"kind":"win",
+	"wide":	300,
+	"high":	400,
+	"bg": "grey"
+\	"font":	"fonts/simfang.ttf 16",
+	"center": true,
+	"children":
+	[
+		{
+			"kind":	"box",
+			"name":	"title_box",
+			"bg": "blue",
+			"bounds": "0, 0, parent.width, 40",
+			"children": 
+			[
+				{
+					"kind":	"label",
+					"parent": "title_box",
+					"label": "汇通钱包",
+					"font":	"24",
+					"fg": "white",
+					"justify": ["hcenter", "vcenter"],
+					"bounds": "0, 0, parent.width, parent.height",
+					"long-click": ( 2drop g:parent g:parent "stack" g:child 0 g:stackix ),
+				}
+			]
+		},
+		{
+			"kind":	"box",
+			"name":	"account_box",
+			"bg": "green",
+			"bounds": "0, 40, parent.width, parent.height"
+			"children":
+			[
+				{
+					"kind":	"stack",
+					"name":	"stack",
+					"animator": "fade",
+					"dir": 1,
+					"stackix": 0,
+					"transition": [500, 1, 1],
+					"bounds": "0, 0, parent.width, parent.height",
+					"stack":
+					[
+			 			{
+							"kind":	"box",
+							"font":	"24",
+							"stackix": 0,
+							"bounds": "0, 0, parent.width, parent.height",
+							"children":
+							[
+				 				{
+									"kind":	"label"
+									"name":	"account_name",
+									"fg": "white",
+									"justify": ["hcenter", "vcenter"],
+									"bounds": "0, 0, parent.width, parent.height / 2",
+									"label": `accounts @ current @ a:@`,
+									"long-click": (2drop g:parent g:parent 1 g:stackix)
+								},
+								{
+									"kind":	"label",
+									"fg": "white",
+									"justify": ["hcenter", "vcenter"],
+									"bounds": "0, parent.height / 2, parent.width, parent.height",
+									"label": `currency @ >s `
+									"long-click": (2drop g:parent g:parent 2 g:stackix)
+								}
+							]
+						}
+						{
+							"kind":	"list",
+							"stackix": 1,
+							"fg": "white",
+							"bg": "cyan4",
+							"multi": true,
+							"bounds": "0, 0, parent.width, parent.height",
+							"items": `accounts @ `,
+							"list-clicked":	(current !)
+						},
+						{
+							"kind": "label",
+							"stackix": 2,
+							"fg": "white",
+							"bg": "cyan4",
+							"label": "支付功能尚未提供",
+							"bounds": "0, 0, parent.width, parent.height",
+						},
+					]
+				},
+			]
+		}
+	]
+}
