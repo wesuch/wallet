@@ -1,0 +1,36 @@
+[
+	{
+		"name" : "我的账户",
+		"private" : "a035a1c9a284ea1877d2d6565525f3d3",
+		"public" : "a035a1c9a284ea1877d2d6565525f3d3",
+		"sharecount" : 1,
+		"confirmcount" : 1,
+		"shares" : []
+	},
+	{
+		"name" : "我的共享账户",
+		"private" : "a035a1c9a284ea1877d2d6565525f3d3",
+		"public" : "a035a1c9a284ea1877d2d6565525f3d3",
+		"sharecount" : 3,
+		"confirmcount" : 2,
+		"shares" :
+		[
+			{
+				"name" : "张三",
+				"public" : "a035a1c9a284ea1877d2d6565525f3d3",
+			} ,
+			{
+				"name" : "李四",
+				"public" : "a035a1c9a284ea1877d2d6565525f3d3",
+			}
+		]
+	} ,
+	{
+		"name" : "我的另一个账户",
+		"private" : "a035a1c9a284ea1877d2d6565525f3d3",
+		"public" : "a035a1c9a284ea1877d2d6565525f3d3",
+		"sharecount" : 1,
+		"confirmcount" : 1,
+		"shares" : []
+	},
+]
