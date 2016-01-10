@@ -1,0 +1,10 @@
+\ Chinese
+"zh" curlang !
+{
+	"title" : "汇通钱包",
+	"todo" : "该功能尚未实现",
+	"BTC": "%d比特",
+	"mBTC": "%d毫特",
+	"uBTC": "%d微特",
+}
+s:intl!

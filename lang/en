@@ -1,0 +1,11 @@
+\ English
+\ vim: ft=8th :
+"en" curlang !
+{
+	"title" : "Wesuch Wallet",
+	"todo" : "Todo.",
+	"BTC": "BTC %d",
+	"mBTC": "mBTC %d",
+	"uBTC": "uBTC %d",
+}
+s:intl!
