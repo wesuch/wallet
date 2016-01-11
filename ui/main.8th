@@ -4,11 +4,11 @@
 	"high":	400,
 	"bg": "grey"
 	"center": true,
+	"resize-corner": 20,
 	"children":
 	[
 		{
 			"kind":	"box",
-			"name":	"title_box",
 			"bg": "grey",
 			"bounds": "0, 0, parent.width, 40",
 			"children": 
@@ -27,18 +27,17 @@
 		},
 		{
 			"kind":	"box",
-			"name":	"account_box",
 			"bg": "blue",
-			"bounds": "0, 40, parent.width, parent.height"
+			"bounds": "0, 40, parent.width, parent.height - 20"
 			"children":
 			[
 				{
 					"kind":	"stack",
 					"name":	"stack",
-					"animator": "fade",
+					"animator": "slide",
 					"dir": 0,
 					"stackix": 0,
-					"transition": [1000, 1, 1],
+					"transition": [500, 1, 1],
 					"bounds": "0, 0, parent.width, parent.height",
 					"stack":
 					[
@@ -50,7 +49,6 @@
 							[
 				 				{
 									"kind":	"label"
-									"name":	"account_name",
 									"font": "*fonts/HanaMinA.ttf 24",
 									"fg": "white",
 									"justify": ["hcenter", "vcenter"],
@@ -64,7 +62,7 @@
 									"font": "*fonts/HanaMinA.ttf 24",
 									"justify": ["hcenter", "vcenter"],
 									"bounds": "0, parent.height / 2, parent.width, parent.height",
-									"label": `currency @ "BTC" s:intl s:strfmt`
+									"label": `currency @ "%0.00f" s:strfmt "BTC" s:intl s:strfmt`
 									"long-click": (2drop g:parent g:parent 2 g:stackix)
 								}
 							]
@@ -89,6 +87,90 @@
 							"label": `"todo" s:intl`,
 							"bounds": "0, 0, parent.width, parent.height",
 						},
+					]
+				},
+			]
+		} ,
+		{
+			"kind":	"box",
+			"name":	"bottom_box",
+			"bg": "blue",
+			"bounds": "0, parent.height - 20, parent.width, parent.height"
+			"children":
+			[
+				{
+					"kind":	"box",
+					"bounds": "0, 0, parent.width - 60, parent.height",
+					"bounds": "0, 0, parent.width, parent.height",
+					"children":
+					[
+		 				{
+							"kind":	"label"
+							"font": "*fonts/HanaMinA.ttf 16",
+							"fg": "white",
+							"justify": ["hleft", "vcenter"],
+							"bounds": "0, 0, parent.width, parent.height",
+							"label": `"★" nodes @ s:* "☆" 10 nodes @ n:- s:* s:+`
+						}
+					]
+				} ,
+				{
+					"kind":	"stack",
+					"animator": "shutter",
+					"dir": 2,
+					"stackix": 0,
+					"transition": [500, 1, 1],
+					"bounds": "parent.width - 60, 0, parent.width, parent.height",
+					"stack":
+					[
+			 			{
+							"kind":	"box",
+							"bounds": "0, 0, parent.width, parent.height",
+							"children":
+							[
+				 				{
+									"kind":	"label"
+									"font": "*fonts/HanaMinA.ttf 16",
+									"fg": "white",
+									"justify": ["hcenter", "vcenter"],
+									"bounds": "0, 0, parent.width, parent.height",
+									"label": `"" "BTC" s:intl s:strfmt`,
+									"long-click": ( 2drop g:parent g:parent g:next )
+								}
+							]
+						} ,
+			 			{
+							"kind":	"box",
+							"bounds": "0, 0, parent.width, parent.height",
+							"children":
+							[
+				 				{
+									"kind":	"label"
+									"font": "*fonts/HanaMinA.ttf 16",
+									"fg": "white",
+									"justify": ["hcenter", "vcenter"],
+									"bounds": "0, 0, parent.width, parent.height",
+									"label": `"" "mBTC" s:intl s:strfmt`,
+									"long-click": ( 2drop g:parent g:parent g:next )
+								}
+							]
+						} ,
+			 			{
+							"kind":	"box",
+							"bounds": "0, 0, parent.width, parent.height",
+							"children":
+							[
+				 				{
+									"kind":	"label"
+									"font": "*fonts/HanaMinA.ttf 16",
+									"fg": "white",
+									"justify": ["hcenter", "vcenter"],
+									"bounds": "0, 0, parent.width, parent.height",
+									"label": `"" "uBTC" s:intl s:strfmt`,
+									"long-click": ( 2drop g:parent g:parent g:next )
+								}
+							]
+						}
 					]
 				},
 			]

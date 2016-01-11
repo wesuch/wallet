@@ -9,6 +9,7 @@ syslang s:lang
 "data/accounts.8th" app:asset eval var, accounts
 
 0 var, current	\ 当前账户
+3 var, nodes	\ 连结节点数
 1000 var, currency	\ 当前余额
 
 : app:main
