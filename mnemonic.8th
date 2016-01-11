@@ -3,8 +3,8 @@
 \	调用规格：  -- a
 \	a为所生成的密语数组
 
-"wordlist.8th" app:asset eval var, wordlist
-: mnemonic_generate
+	"chinese_simplified.txt" app:asset
+: 	mnemonic_generate
 	\	生成两个64位的随机数
 	2 base drop
 	( rand >s ) 2 times
@@ -33,12 +33,27 @@
 	1010 base drop
 	
 	\	对应为密语单词
-	( wordlist @ swap a:@ nip ) a:map ;
+	[]
+	"chinese_simplified.txt" f:open-ro ( rot swap a:push swap ) f:eachline f:close
+	>r
+	( r@ swap a:@ nip ) a:map
+	\ clean up:
+	rdrop ;
 
+"mnemonic.8th" f:include
 \	该函数检查密语数组的正确性
 \	参考: BIP 0039
 \	调用规格：  a -- t
 \	a为密语数组，t为结果true或者false
 : mnemonic_check
 	\	对应为索引位
-	;
+	dup a:len 12 n:= not dup if;
+	2drop
+	0 >r
+	( 
+		"chinese_simplified.txt" f:open-ro 
+		( .s rot s:= if drop r@ swap break else r> 1 n:+ >r then ; ) f:eachline 
+		f:close
+	) a:map
+	\ clean up
+	rdrop ;

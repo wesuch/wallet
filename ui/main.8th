@@ -3,22 +3,21 @@
 	"wide":	300,
 	"high":	400,
 	"bg": "grey"
-\	"font":	"fonts/simfang.ttf 16",
 	"center": true,
 	"children":
 	[
 		{
 			"kind":	"box",
 			"name":	"title_box",
-			"bg": "blue",
+			"bg": "grey",
 			"bounds": "0, 0, parent.width, 40",
 			"children": 
 			[
 				{
 					"kind":	"label",
 					"parent": "title_box",
-					"label": "汇通钱包",
-					"font":	"24",
+					"font": "*fonts/HanaMinA.ttf 24",
+					"label": `"title" s:intl`,
 					"fg": "white",
 					"justify": ["hcenter", "vcenter"],
 					"bounds": "0, 0, parent.width, parent.height",
@@ -29,7 +28,7 @@
 		{
 			"kind":	"box",
 			"name":	"account_box",
-			"bg": "green",
+			"bg": "blue",
 			"bounds": "0, 40, parent.width, parent.height"
 			"children":
 			[
@@ -37,15 +36,14 @@
 					"kind":	"stack",
 					"name":	"stack",
 					"animator": "fade",
-					"dir": 1,
+					"dir": 0,
 					"stackix": 0,
-					"transition": [500, 1, 1],
+					"transition": [1000, 1, 1],
 					"bounds": "0, 0, parent.width, parent.height",
 					"stack":
 					[
 			 			{
 							"kind":	"box",
-							"font":	"24",
 							"stackix": 0,
 							"bounds": "0, 0, parent.width, parent.height",
 							"children":
@@ -53,18 +51,20 @@
 				 				{
 									"kind":	"label"
 									"name":	"account_name",
+									"font": "*fonts/HanaMinA.ttf 24",
 									"fg": "white",
 									"justify": ["hcenter", "vcenter"],
 									"bounds": "0, 0, parent.width, parent.height / 2",
-									"label": `accounts @ current @ a:@`,
+									"label": `accounts @ current @ a:@ "name" o:@ nip`,
 									"long-click": (2drop g:parent g:parent 1 g:stackix)
 								},
 								{
 									"kind":	"label",
 									"fg": "white",
+									"font": "*fonts/HanaMinA.ttf 24",
 									"justify": ["hcenter", "vcenter"],
 									"bounds": "0, parent.height / 2, parent.width, parent.height",
-									"label": `currency @ >s `
+									"label": `currency @ "BTC" s:intl s:strfmt`
 									"long-click": (2drop g:parent g:parent 2 g:stackix)
 								}
 							]
@@ -73,18 +73,20 @@
 							"kind":	"list",
 							"stackix": 1,
 							"fg": "white",
-							"bg": "cyan4",
+							"font": "*fonts/HanaMinA.ttf 16",
+							"bg": "blue",
 							"multi": true,
 							"bounds": "0, 0, parent.width, parent.height",
-							"items": `accounts @ `,
+							"items": `accounts @ ( "name" o:@ nip ) a:map`,
 							"list-clicked":	(current !)
 						},
 						{
 							"kind": "label",
 							"stackix": 2,
 							"fg": "white",
-							"bg": "cyan4",
-							"label": "支付功能尚未提供",
+							"font": "*fonts/HanaMinA.ttf 16",
+							"bg": "blue",
+							"label": `"todo" s:intl`,
 							"bounds": "0, 0, parent.width, parent.height",
 						},
 					]
