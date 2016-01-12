@@ -1,0 +1,95 @@
+\	获取密语字典数组
+\	n -- a
+\	n为语言编码，0为英语，1为日语，2为西班牙文，3为中文简体，4为中文繁体，5为法文
+\	a为密语字典数组
+: mnemonic_wordlist
+	[ "english.txt", "japanese.txt", "spanish.txt", "chinese_simplified.txt", "chinese_traditional.txt", "french.txt" ]
+	swap a:@ f:open-ro nip
+	[] swap
+	( rot swap a:push swap ) f:eachline 
+	f:close ;
+
+
+\	该函数随机生成一个密语数组
+\	参考: BIP 0039
+\	调用规格： -- a
+
+: mnemonic_generate
+	\	生成两个64位的随机数
+	2 base drop
+	( rand >s ) 2 times
+	1010 base drop
+	
+	\	将之拼接为128位字符串，前置空位补0
+	"%064s%064s" s:strfmt
+	\	并其SHA256哈希值头四位，添加到末尾，构成132位字符串
+	dup
+	cr:SHA256 cr:hash cr:hash>s
+	16 base drop
+	>n
+	2 base drop
+	>s
+	1010 base drop
+	0 4 s:slice
+	s:+
+	
+	\	将其按11位长平均分割，共计有132/11=12部分
+	( 11 s:/ a:open ) 11 times
+	12 a:close
+	
+	\	将每部分转换为一个0-2047的值
+	2 base drop 
+	( >n ) a:map
+	1010 base drop
+	
+	\	对应为密语单词
+	3 mnemonic_wordlist >r
+	( r@ swap a:@ nip ) a:map
+	\ clean up:
+	rdrop ;
+
+\	该函数检查密语数组的正确性
+\	参考: BIP 0039
+\	调用规格：  a -- t
+\	a为密语数组，t为结果true或者false
+: mnemonic_check
+	\	将数组元素对应为索引位
+	3 mnemonic_wordlist >r
+	( 
+		r@ swap >r
+		( r@ s:= if; 2drop ) a:each
+		drop
+		rdrop
+	) a:map
+	\ clean up
+	rdrop
+	
+	\	将每部分转换为一个11位长的二进制字符串
+	2 base drop 
+	( >s "%011s" s:strfmt ) a:map
+	1010 base drop
+
+	\	组合为一个132位长的二进制字符串
+	"" a:join
+
+	\	截取128位长度，剩余四位为验证码
+	128 s:/ a:open swap
+
+	\	计算其SHA256哈希值
+	cr:SHA256 cr:hash cr:hash>s
+	16 base drop
+	>n
+	2 base drop
+	>s
+	1010 base drop
+
+	\	取哈希值的前四位
+	0 4 s:slice
+
+	\	与验证码进行比较
+	s:= ;
+mnemonic_generate
+.s
+mnemonic_check
+.s
+bye
