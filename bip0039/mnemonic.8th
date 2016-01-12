@@ -10,19 +10,25 @@
 	f:close ;
 
 \	该函数返回元素在数组中的位置
-\	a x cmp -- ix
-\	如果未找到，ix为null
+\	http://8th-dev.com/forum/index.php/topic,717.0.html
 
-: a:indexof
-	>r	\ cmp
-	>r	\ x
-	null >r \ ix
-	( 1 rpick 2 rpick w:exec if rdrop >r break else drop then ) a:each 
-	drop
-	r>
-	rdrop
-	rdrop
-	;
+: a:index-of \ a item cmp -- a ix
+	>r swap
+	\ prepare for 'no such item':
+	null -rot
+	(
+		\ test the current item against our search item:
+		2 pick r@ w:exec
+		\ it matches, so get rid of the 'null' result, and break the loop:
+		if
+			swap rot
+			break
+		then
+			\ in any case, drop the remaining item
+			drop
+	) a:each
+	\ clean up:
+	rdrop nip swap ;
 
 
 \	该函数随机生成一个密语数组
@@ -70,7 +76,7 @@
 : mnemonic_check
 	\	将数组元素对应为索引位
 	3 mnemonic_wordlist >r
-	( r@ swap ' s:= a:indexof ) a:map
+	( r@ swap ' s:= a:index-of nip ) a:map
 	rdrop
 	
 	\	将每部分转换为一个11位长的二进制字符串
@@ -97,8 +103,26 @@
 
 	\	与验证码进行比较
 	s:= ;
-mnemonic_generate
-.s
-mnemonic_check
-.s
-bye
+
+\	void mnemonic_to_seed(const char *mnemonic, const char *passphrase, uint8_t seed[512 / 8], void (*progress_callback)(uint32_t current, uint32_t total))
+\	{
+\	 uint8_t salt[8 + 256 + 4];
+\        int saltlen = strlen(passphrase);
+\        memcpy(salt, "mnemonic", 8);
+\        memcpy(salt + 8, passphrase, saltlen);
+\        saltlen += 8;
+\        pbkdf2_hmac_sha512((const uint8_t *)mnemonic, strlen(mnemonic), salt, saltlen, BIP39_PBKDF2_ROUNDS, seed, 512 / 8, progress_callback);
+\	}
+
+\	该函数由密语字符串生成种子字符串
+\	参考：BIP 0039
+\	调用格式：	mnemonic passphrase -- seed
+\	mnemonic为16字节长的密语
+\	passphrase为加密字，可由用户指定
+\	seed为64位字节长的种子数据
+: mnemonic_seed
+	"mnemonic" swap s:+
+	cr:SHA512
+	cr:hmac
+	cr:hash>s
+	;
