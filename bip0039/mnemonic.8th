@@ -9,6 +9,21 @@
 	( rot swap a:push swap ) f:eachline 
 	f:close ;
 
+\	该函数返回元素在数组中的位置
+\	a x cmp -- ix
+\	如果未找到，ix为null
+
+: a:indexof
+	>r	\ cmp
+	>r	\ x
+	null >r \ ix
+	( 1 rpick 2 rpick w:exec if rdrop >r break else drop then ) a:each 
+	drop
+	r>
+	rdrop
+	rdrop
+	;
+
 
 \	该函数随机生成一个密语数组
 \	参考: BIP 0039
@@ -55,13 +70,7 @@
 : mnemonic_check
 	\	将数组元素对应为索引位
 	3 mnemonic_wordlist >r
-	( 
-		r@ swap >r
-		( r@ s:= if; 2drop ) a:each
-		drop
-		rdrop
-	) a:map
-	\ clean up
+	( r@ swap ' s:= a:indexof ) a:map
 	rdrop
 	
 	\	将每部分转换为一个11位长的二进制字符串
