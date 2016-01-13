@@ -1,10 +1,16 @@
-\	获取密语字典数组
-\	n -- a
+\	该函数设置密语语种
+\	n --
 \	n为语言编码，0为英语，1为日语，2为西班牙文，3为中文简体，4为中文繁体，5为法文
+0 var, m_lang	\	缺省为英语
+: mnemonic_lang
+	m_lang ! ;
+
+\	获取密语字典数组
+\	-- a
 \	a为密语字典数组
 : mnemonic_wordlist
 	[ "english.txt", "japanese.txt", "spanish.txt", "chinese_simplified.txt", "chinese_traditional.txt", "french.txt" ]
-	swap a:@ f:open-ro nip
+	m_lang @ a:@ f:open-ro nip
 	[] swap
 	( rot swap a:push swap ) f:eachline 
 	f:close ;
@@ -34,13 +40,12 @@
 : binary 
 	2 base drop ;
 
+
 \	该函数随机生成一个12个单词/字的密语数组
 \	参考: BIP 0039
-\	调用规格： n -- a
-\	n为语种编码，详见mnemonic_wordlist
+\	调用规格： -- a
 
 : mnemonic_generate
-	>r	\ n
 	\       随机生成两个64位的随机数
 	binary ( rand >s ) 2 times decimal
 
@@ -68,15 +73,15 @@
 	decimal
 	
 	\	对应为密语单词
-	r> mnemonic_wordlist >r
+	mnemonic_wordlist >r
 	( r@ swap a:@ nip ) a:map
 	\ clean up:
 	rdrop ;
 
 \	该函数检查密语数组的正确性
 \	参考: BIP 0039
-\	调用规格：  a n -- t
-\	a为密语数组，n为密语语种编码，t为true或者false
+\	调用规格：  a -- t
+\	a为密语数组，t为true或者false
 : mnemonic_check
 	\	将数组元素对应为索引位
 	mnemonic_wordlist >r
@@ -121,12 +126,9 @@
 	cr:hmac
 	cr:hash>s ;
 
-3 var, lang	\ 语种
 : mnemonic_test
-	lang @ mnemonic_generate
+	3 mnemonic_lang
+	mnemonic_generate
 	dup
-	lang @ mnemonic_check
+	mnemonic_check
 	if "wesuch" mnemonic_seed then ;
-
-mnemonic_test
-.s bye
