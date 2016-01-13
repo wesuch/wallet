@@ -11,7 +11,6 @@
 
 \	该函数返回元素在数组中的位置
 \	http://8th-dev.com/forum/index.php/topic,717.0.html
-
 : a:index-of \ a item cmp -- a ix
 	>r swap
 	\ prepare for 'no such item':
@@ -30,27 +29,32 @@
 	\ clean up:
 	rdrop nip swap ;
 
+\	set the numberic base to 2
+\	--
+: binary 
+	2 base drop ;
 
-\	该函数随机生成一个密语数组
+\	该函数随机生成一个12个单词/字的密语数组
 \	参考: BIP 0039
-\	调用规格： -- a
+\	调用规格： n -- a
+\	n为语种编码，详见mnemonic_wordlist
 
 : mnemonic_generate
-	\	生成两个64位的随机数
-	2 base drop
-	( rand >s ) 2 times
-	1010 base drop
-	
-	\	将之拼接为128位字符串，前置空位补0
+	>r	\ n
+	\       随机生成两个64位的随机数
+	binary ( rand >s ) 2 times decimal
+
+	\       将之拼接为128位字符串，前置空位补0
 	"%064s%064s" s:strfmt
-	\	并其SHA256哈希值头四位，添加到末尾，构成132位字符串
+
+	\	计算验证码（SHA256哈希值头四位），添加到末尾，构成132位字符串
 	dup
 	cr:SHA256 cr:hash cr:hash>s
-	16 base drop
+	hex
 	>n
-	2 base drop
+	binary
 	>s
-	1010 base drop
+	decimal
 	0 4 s:slice
 	s:+
 	
@@ -59,30 +63,30 @@
 	12 a:close
 	
 	\	将每部分转换为一个0-2047的值
-	2 base drop 
+	binary
 	( >n ) a:map
-	1010 base drop
+	decimal
 	
 	\	对应为密语单词
-	3 mnemonic_wordlist >r
+	r> mnemonic_wordlist >r
 	( r@ swap a:@ nip ) a:map
 	\ clean up:
 	rdrop ;
 
 \	该函数检查密语数组的正确性
 \	参考: BIP 0039
-\	调用规格：  a -- t
-\	a为密语数组，t为结果true或者false
+\	调用规格：  a n -- t
+\	a为密语数组，n为密语语种编码，t为true或者false
 : mnemonic_check
 	\	将数组元素对应为索引位
-	3 mnemonic_wordlist >r
+	mnemonic_wordlist >r
 	( r@ swap ' s:= a:index-of nip ) a:map
 	rdrop
 	
 	\	将每部分转换为一个11位长的二进制字符串
-	2 base drop 
+	binary
 	( >s "%011s" s:strfmt ) a:map
-	1010 base drop
+	decimal
 
 	\	组合为一个132位长的二进制字符串
 	"" a:join
@@ -92,11 +96,11 @@
 
 	\	计算其SHA256哈希值
 	cr:SHA256 cr:hash cr:hash>s
-	16 base drop
+	hex
 	>n
-	2 base drop
+	binary
 	>s
-	1010 base drop
+	decimal
 
 	\	取哈希值的前四位
 	0 4 s:slice
@@ -104,25 +108,25 @@
 	\	与验证码进行比较
 	s:= ;
 
-\	void mnemonic_to_seed(const char *mnemonic, const char *passphrase, uint8_t seed[512 / 8], void (*progress_callback)(uint32_t current, uint32_t total))
-\	{
-\	 uint8_t salt[8 + 256 + 4];
-\        int saltlen = strlen(passphrase);
-\        memcpy(salt, "mnemonic", 8);
-\        memcpy(salt + 8, passphrase, saltlen);
-\        saltlen += 8;
-\        pbkdf2_hmac_sha512((const uint8_t *)mnemonic, strlen(mnemonic), salt, saltlen, BIP39_PBKDF2_ROUNDS, seed, 512 / 8, progress_callback);
-\	}
 
 \	该函数由密语字符串生成种子字符串
 \	参考：BIP 0039
-\	调用格式：	mnemonic passphrase -- seed
-\	mnemonic为16字节长的密语
-\	passphrase为加密字，可由用户指定
-\	seed为64位字节长的种子数据
+\	调用格式：	a s -- s
+\	mnemonic为密语数组
+\	s为加密字，由用户调用时指定
+\	s为32字节长的种子数据
 : mnemonic_seed
-	"mnemonic" swap s:+
-	cr:SHA512
+	swap " " a:join swap
+	cr:SHA256
 	cr:hmac
-	cr:hash>s
-	;
+	cr:hash>s ;
+
+3 var, lang	\ 语种
+: mnemonic_test
+	lang @ mnemonic_generate
+	dup
+	lang @ mnemonic_check
+	if "wesuch" mnemonic_seed then ;
+
+mnemonic_test
+.s bye
