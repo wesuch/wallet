@@ -1,9 +1,21 @@
+0 var, m_lang	\	缺省为英语
+null var, m_seed	\	种子
+-1 var, m_index		\	地址索引号
 \	该函数设置密语语种
 \	n --
 \	n为语言编码，0为英语，1为日语，2为西班牙文，3为中文简体，4为中文繁体，5为法文
-0 var, m_lang	\	缺省为英语
 : mnemonic_lang
 	m_lang ! ;
+
+\	该函数设置种子
+\	s --	\
+: mnemonic_seed
+	m_seed ! ;
+
+\	该函数设置地址索引号
+\	n --	\
+: mnemonic_index
+	m_index ! ;
 
 \	获取密语字典数组
 \	-- a
@@ -126,9 +138,25 @@
 	cr:hmac
 	cr:hash>s ;
 
+\	该函数取下一个可以使用的地址
+\	调用格式：	-- s
+: mnemonic_next
+	\ 根据种子和索引号，计算私钥
+	m_seed @
+	m_index @ :1+ >s s:+
+	cr:SHA256
+	cr:hash
+	cr:hash>s ;
+
+	\ 计算其公钥
+
 : mnemonic_test
 	3 mnemonic_lang
 	mnemonic_generate
 	dup
 	mnemonic_check
 	if "wesuch" mnemonic_seed then ;
+
+mnemonic_test
+.s
+bye
