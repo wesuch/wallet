@@ -1,0 +1,43 @@
+                                .oO Phrack 50 Oo.
+
+                            Volume Seven, Issue Fifty
+
+                                     13 of 16
+ 
+                         ===============================
+                         DTMF Encoding and Decoding In C
+                                    by Mr. Blue
+                         ===============================
+
+  
+Introduction
+------------
+    DTMF tones are the sounds emitted when you dial a number on your touch 
+tone phone.  Modems have traditionally been the device used to generate
+these tones from a computer.  But the more sophisticated modems on the
+market today are nothing more than a DSP (digital signal processor) with
+accompanying built-in software to generate and interpet analog sounds into
+digital data.  The computers sitting on your desk have more cpu power,
+a more complex OS, and very often a just as sophisticated DSP.  There is
+no reason you can not duplicate the functionality of a modem from right
+inside of unix software, providing you with a lot easier to understand and
+modify code.  
+
+    In this article I provide the source code to both encode and decode
+DTMF tones.  There are numerous uses for this code, for use in unix based 
+phone scanning and war dialing programs, voice mail software, automated
+pbx brute force hacking, and countless other legitimate and not so
+legitimate uses.
+
+    I will not go into depth explaining the underlying mathematical
+theories behind this code.  If you are of a sufficient math background I
+would encourage you to research and learn about the algorithms used from
+your local college library; it is not my intent to summarize these
+algorithms, only to provide unix C code that can be used on its own or
+expanded to be used as part of a larger program.  
+
+    Use the extract utility included with Phrack to save the individual
+source files out to the dtmf/ directory.  If you find this code useful, I
+would encourage you to show your appreciation by sharing some of your own
+knowledge with Phrack.    
+
