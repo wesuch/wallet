@@ -8,10 +8,12 @@ syslang s:lang
 \ 账户数据
 "data/accounts.8th" app:asset eval var, accounts
 
-0 var, current	\ 当前账户
-3 var, nodes	\ 连结节点数
-1000 var, currency	\ 当前余额
+0 var, current  \ 当前账户
+3 var, nodes    \ 连结节点数
+1000 var, currency      \ 当前余额
+[ "unit_0", "unit_1", "unit_2" ] var, units
+0 var, current_unit     \ 当前所使用的单位 
 
 : app:main
-	"ui/main.8th" app:asset eval g:new
-	g:show ;
+        "ui/main.8th" app:asset eval g:new
+        g:show ;
