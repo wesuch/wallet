@@ -2,10 +2,9 @@
 
 "zh" curlang !
 {
-	"title" : "汇通钱包",
-	"todo" : "该功能尚未实现",
-	"BTC" : "%s比特",
-	"mBTC" : "%s毫特",
-	"uBTC" : "%s微特",
+        "title" : "汇通钱包",
+        "unit_0" : "%s比特",
+        "unit_1" : "%s毫特",
+        "unit_2" : "%s微特"
 }
 s:intl!
